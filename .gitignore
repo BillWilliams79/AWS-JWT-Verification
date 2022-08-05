@@ -1,0 +1,13 @@
+# Mac OS .ds_store files @ any level
+.DS_Store
+__pycache__/
+/*.zip
+
+bin
+ecdsa*
+jose
+master
+pyasn*
+python_jose*
+rsa*
+six*
