@@ -39,6 +39,7 @@ def lambda_handler(event, context):
 
     if event.get('body') != None:
         body = json.loads(event['body'])
+        #body = event['body'] # for lambda test events where json encode impossible...
     else:
         # body not sent improperly formed request
         return compose_rest_response('400', '', 'BAD REQUEST')
@@ -98,9 +99,10 @@ def lambda_handler(event, context):
 
     # after audience is verified to match AWS client id, we can trust the claims
     # and use them for our purposes.
+    #varDump(claims, 'claims!')
     if claims.get('cognito:username') != None:
 
-        response_body = {'username': claims['cognito:username']}
+        response_body = {'username': claims['cognito:username'], 'expires': claims['exp']}
         return compose_rest_response('200', json.dumps(response_body), 'OK')
 
     else:
