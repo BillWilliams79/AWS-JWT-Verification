@@ -22,7 +22,10 @@ print('JWT Decode Lambda Cold Start')
 
 region = "us-west-1"
 user_pool_id = "us-west-1_jqN0WLASK"
-app_client_id = "4qv8m44mllqllljbenbeou4uis"
+app_client_ids = [
+    "4qv8m44mllqllljbenbeou4uis",          # original client (with secret, used by E2E tests)
+    "8s82usrcfe58mllbceiavfcd2",            # public client (no secret, used by browser PKCE flow)
+]
 keys_url = f"https://cognito-idp.{region}.amazonaws.com/{user_pool_id}/.well-known/jwks.json"
 
 # Download keys from Cognito IDP
@@ -93,7 +96,7 @@ def lambda_handler(event, context):
         return compose_rest_response('422', '', 'TOKEN EXPIRED')
 
     # and the Audience  (use claims['client_id'] if verifying an access token)
-    if claims['aud'] != app_client_id:
+    if claims['aud'] not in app_client_ids:
         print('Token was not issued for this AWS App')
         return compose_rest_response('422', '', 'AUDIENCE MISMATCH')
 
