@@ -106,7 +106,7 @@ def lambda_handler(event, context):
     if claims.get('cognito:username') != None:
 
         response_body = {'username': claims['cognito:username'], 'expires': claims['exp']}
-        return compose_rest_response('200', json.dumps(response_body), 'OK')
+        return compose_rest_response('200', response_body, 'OK')
 
     else:
 
